@@ -33,11 +33,13 @@ const loadData = () => {
 const displayLoadData = (allData) => {
      const cardContainer = document.getElementById('card-container');
     allData.forEach(data => {
+        // console.log(data._id);
         const { thumbnail_url, title, details,author,total_view,_id } = data;
         const createCard = document.createElement('div');
         
         createCard.innerHTML = `
-        <div onclick="modalFunction('${data._id}')" class="flex flex-col md:flex-row md:max-w-xl rounded-lg bg-white shadow-lg">
+        <div onclick="modalFunction('${data._id}')" class="flex flex-col md:flex-row md:max-w-xl rounded-lg bg-white shadow-lg" 
+        data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         <img class="  w-full h-96 md:h-auto object-cover md:w-48 rounded-t-lg md:rounded-none md:rounded-l-lg" src="${thumbnail_url}" alt="" />
         <div class="p-6 flex flex-col justify-start">
           <h5 class="text-gray-900 text-xl font-medium mb-2">${title}
@@ -67,11 +69,28 @@ loadData();
 const modalFunction = (id) => {
     fetch(`https://openapi.programming-hero.com/api/news/${id}`)
         .then(res => res.json())
-        .then(data => displayDetails(data))
+        .then(data => displayDetails(data.data))
     
 }
-const displayDetails = () => {
-    const modalContainer = document.getElementById('modal-container');
+const displayDetails = (allData) => {   
+    const description = document.getElementById('description');
+    const modalTitle = document.getElementById('exampleModalLabel');
+    const imageContainer = document.getElementById('img-container');
+
+    allData.forEach(data => {
+        console.log(data);
+          
+    const { thumbnail_url, title, details, author, total_view, _id,image_url } = data;
+ 
+        modalTitle.innerText = `${data.title}
+    `;
+        description.innerText = `${details}`;
+        imageContainer.innerHTML = `
+        <img src="${image_url}" alt="">
+        `
+        
+
+})
 }
 
 
