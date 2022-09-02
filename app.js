@@ -44,6 +44,10 @@ const displayLoadData = (allData) => {
           <p class="text-gray-700 text-base mb-4">${details.slice(0,150)}...</p>
           
           
+ <div class="text-sm inline-grid grid-cols-2 gap-2">
+ <div><img class="w-10 h-10 inline-grid  rounded-full " src="${thumbnail_url}">
+ <span class="font-semibold">${author.name?author.name:'no data available'}</span></div>
+ <div><p class="font-semibold mt-2">View: ${total_view?total_view:'no data available'}</p></div>
          
       </div>
          
