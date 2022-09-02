@@ -23,6 +23,7 @@ const displayCategoryName = (allData) => {
     });
 }
 
+
 getCategoryName();
 const loadData = () => {
     fetch('https://openapi.programming-hero.com/api/news/category/01')
@@ -32,12 +33,11 @@ const loadData = () => {
 const displayLoadData = (allData) => {
      const cardContainer = document.getElementById('card-container');
     allData.forEach(data => {
-        // console.log(data._id);
-        const { thumbnail_url, title, details,author,total_view } = data;
+        const { thumbnail_url, title, details,author,total_view,_id } = data;
         const createCard = document.createElement('div');
         
         createCard.innerHTML = `
-        <div onclick="modalFunction(data._id)" class="flex flex-col md:flex-row md:max-w-xl rounded-lg bg-white shadow-lg">
+        <div onclick="modalFunction('${data._id}')" class="flex flex-col md:flex-row md:max-w-xl rounded-lg bg-white shadow-lg">
         <img class="  w-full h-96 md:h-auto object-cover md:w-48 rounded-t-lg md:rounded-none md:rounded-l-lg" src="${thumbnail_url}" alt="" />
         <div class="p-6 flex flex-col justify-start">
           <h5 class="text-gray-900 text-xl font-medium mb-2">${title}
@@ -60,5 +60,21 @@ const displayLoadData = (allData) => {
       </div>`
         cardContainer.appendChild(createCard);
     })
+    
 }
 loadData();
+
+const modalFunction = (id) => {
+    fetch(`https://openapi.programming-hero.com/api/news/${id}`)
+        .then(res => res.json())
+        .then(data => displayDetails(data))
+    
+}
+const displayDetails = () => {
+    const modalContainer = document.getElementById('modal-container');
+}
+
+
+modalFunction();
+
+
