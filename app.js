@@ -32,11 +32,12 @@ const loadData = () => {
 const displayLoadData = (allData) => {
      const cardContainer = document.getElementById('card-container');
     allData.forEach(data => {
+        // console.log(data._id);
         const { thumbnail_url, title, details,author,total_view } = data;
         const createCard = document.createElement('div');
         
         createCard.innerHTML = `
-        <div class="flex flex-col md:flex-row md:max-w-xl rounded-lg bg-white shadow-lg">
+        <div onclick="modalFunction(data._id)" class="flex flex-col md:flex-row md:max-w-xl rounded-lg bg-white shadow-lg">
         <img class="  w-full h-96 md:h-auto object-cover md:w-48 rounded-t-lg md:rounded-none md:rounded-l-lg" src="${thumbnail_url}" alt="" />
         <div class="p-6 flex flex-col justify-start">
           <h5 class="text-gray-900 text-xl font-medium mb-2">${title}
@@ -45,7 +46,7 @@ const displayLoadData = (allData) => {
           
           
  <div class="text-sm inline-grid grid-cols-2 gap-2">
- <div><img class="w-10 h-10 inline-grid  rounded-full " src="${thumbnail_url}">
+ <div><img class="w-10 h-10 inline-grid  rounded-full " src="${author.img}">
  <span class="font-semibold">${author.name?author.name:'no data available'}</span></div>
  <div><p class="font-semibold mt-2">View: ${total_view?total_view:'no data available'}</p></div>
          
