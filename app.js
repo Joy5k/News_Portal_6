@@ -5,6 +5,7 @@ const getCategoryName = () => {
         .catch(error=>console.log(error))
 }
 const displayCategoryName = (allData) => {
+    
     const categoriesContainer = document.getElementById('catergory-container');
     allData.forEach(data => {
      
@@ -26,16 +27,17 @@ const displayCategoryName = (allData) => {
 
 
 const showTheNews = (news) => {
+    spinner(false)
     fetch(` https://openapi.programming-hero.com/api/news/category/0${news}`)
         .then(res => res.json())
         .then(data => displayClickedItem(data.data))
         .catch(error=>console.log(error))
     
 }
-                    //selected--- catagories items  -----
+                    //news feed--- catagories items  -----
 
 const displayClickedItem = (categories) => {
-    // show news category length
+   
     const categoryLength = document.getElementById('count-catergory');
     if (categories.length === 0) {
         categoryLength.innerText = `Oops! No Data found`;
@@ -44,9 +46,7 @@ const displayClickedItem = (categories) => {
         categoryLength.innerText = `
      ${categories.length} :Items-Found`;
     }
-    // spinner fu function
-    // spinner(true);
-
+   
     const cardContainer = document.getElementById('card-container');
     cardContainer.innerHTML = '';
     categories.forEach(category => {
@@ -54,7 +54,7 @@ const displayClickedItem = (categories) => {
        
         const createCard = document.createElement('div');
   
-
+      
         
         createCard.innerHTML = `
         <div onclick="modalFunction('${category._id}')" class=" w-full flex flex-col md:flex-row md:max-w-xl rounded-lg bg-white shadow-lg" 
@@ -79,23 +79,26 @@ const displayClickedItem = (categories) => {
       
     </div>
       </div>`
-      
-      spinner(false);
+    
+        
         cardContainer.appendChild(createCard);
-    
+      
     })
-    
+    spinner(true);
+   
     
 }
 // spinner---function--
 const spinner = (result) => {
-    const spinner=  document.getElementById('spinner-id');
-     if (result === true) {
-         spinner.style.display=('hidden');
+    
+     if (result === false) {
+      document.getElementById('spinner-id').classList.remove('hidden');
      }
-     else if(result === false){
-      spinner.style.display='hidden';
-     }
+     else if (result === true) {
+         document.getElementById('spinner-id').classList.add('hidden');
+         console.log('hi Iam working');
+    };
+    return result;
 }
  
 // -------------------modal function-------------------
@@ -146,7 +149,7 @@ const loadData = () => {
         .catch(error=>console.log(error))
 }
 const displayLoadData = (allData) => {
-    console.log('all data',allData.length);
+    spinner(true)
     const cardContainer = document.getElementById('card-container');
     cardContainer.innerHTML = '';
     allData.forEach(data => {
