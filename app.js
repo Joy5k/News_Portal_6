@@ -51,12 +51,13 @@ const displayClickedItem = (categories) => {
     cardContainer.innerHTML = '';
     categories.forEach(category => {
         const { thumbnail_url, title, details,author,total_view,_id } =category ;
-        // console.log('idnumber',category);
+       
         const createCard = document.createElement('div');
+  
 
         
         createCard.innerHTML = `
-        <div onclick="modalFunction('${category._id}')" class="flex flex-col md:flex-row md:max-w-xl rounded-lg bg-white shadow-lg" 
+        <div onclick="modalFunction('${category._id}')" class=" w-full flex flex-col md:flex-row md:max-w-xl rounded-lg bg-white shadow-lg" 
         data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         <img class="  w-full h-96 md:h-auto object-cover md:w-48 rounded-t-lg md:rounded-none md:rounded-l-lg" src="${thumbnail_url}" alt="" />
         <div class="p-6 flex flex-col justify-start">
@@ -123,7 +124,7 @@ const displayDetails = (allData) => {
         <img src="${image_url}" alt="">
         `;
         publishedDate.innerText = ` 
-        Publish Time: ${data.author.published_date}`
+        Publish Time: ${data.author.published_date?data.author.published_date:'no data available'}`
         
 
 })
