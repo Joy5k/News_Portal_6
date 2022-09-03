@@ -40,7 +40,7 @@ const displayClickedItem = (categories) => {
    
     const categoryLength = document.getElementById('count-catergory');
     if (categories.length === 0) {
-        categoryLength.innerText = `Oops! No Data found`;
+        categoryLength.innerText = `Oops! No News found`;
     }
     else {
         categoryLength.innerText = `
