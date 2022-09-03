@@ -7,17 +7,18 @@ const getCategoryName = () => {
 const displayCategoryName = (allData) => {
     const categoriesContainer = document.getElementById('catergory-container');
     allData.forEach(data => {
-        console.log(data.category_id);
+     
         const { category_name } = data;
-        // console.log(category_name);
+  
         
         const createLi = document.createElement('li');
         createLi.innerHTML = `
         <li class="nav-item px-2  font-medium">
-        <a onclick="showTheNews(${data.category_id})" class="nav-link active " aria-current="page" href="#"
+        <a onclick="showTheNews(${data.category_id}) " class="nav-link active " aria-current="page" href="#"
           >${category_name}</a
         >
       </li>`
+      
         categoriesContainer.appendChild(createLi)
 
     });
@@ -27,17 +28,30 @@ const displayCategoryName = (allData) => {
 const showTheNews = (news) => {
     fetch(` https://openapi.programming-hero.com/api/news/category/0${news}`)
         .then(res => res.json())
-        .then(data=>displayClickedItem(data.data))
+        .then(data => displayClickedItem(data.data))
+        .catch(error=>console.log(error))
     
 }
-                    // catagories items selected here-----
+                    //selected--- catagories items  -----
 
 const displayClickedItem = (categories) => {
+    // show news category length
+    const categoryLength = document.getElementById('count-catergory');
+    if (categories.length === 0) {
+        categoryLength.innerText = `Oops! No Data found`;
+    }
+    else {
+        categoryLength.innerText = `
+     ${categories.length} :Items-Found`;
+    }
+    // spinner fu function
+    // spinner(true);
+
     const cardContainer = document.getElementById('card-container');
     cardContainer.innerHTML = '';
     categories.forEach(category => {
         const { thumbnail_url, title, details,author,total_view,_id } =category ;
-        // console.log(category);
+        // console.log('idnumber',category);
         const createCard = document.createElement('div');
 
         
@@ -64,20 +78,74 @@ const displayClickedItem = (categories) => {
       
     </div>
       </div>`
+      
+      spinner(false);
         cardContainer.appendChild(createCard);
     
     })
     
+    
+}
+// spinner---function--
+const spinner = (result) => {
+    const spinner=  document.getElementById('spinner-id');
+     if (result === true) {
+         spinner.style.display=('hidden');
+     }
+     else if(result === false){
+      spinner.style.display='hidden';
+     }
+}
+ 
+// -------------------modal function-------------------
+const modalFunction = (id) => {
+    fetch(`https://openapi.programming-hero.com/api/news/${id}`)
+        .then(res => res.json())
+        .then(data => displayDetails(data.data))
+        .catch(error=>console.log(error))
+    
+}
+const displayDetails = (allData) => {   
+    const description = document.getElementById('description');
+    const modalTitle = document.getElementById('exampleModalLabel');
+    const imageContainer = document.getElementById('img-container');
+    const publishedDate = document.getElementById('publish-date');
+
+    allData.forEach(data => {
+        console.log(data.length);
+          
+    const {  title, details,image_url } = data;
+ 
+        modalTitle.innerText = `${title}
+    `;
+        description.innerText = `${details}`;
+        imageContainer.innerHTML = `
+        <img src="${image_url}" alt="">
+        `;
+        publishedDate.innerText = ` 
+        Publish Time: ${data.author.published_date}`
+        
+
+})
 }
 
 
+modalFunction();
+
+// /-------------------add ---spinner------------------
+
+
+
 getCategoryName();
+// --------------------main function or home page-----------
 const loadData = () => {
     fetch('https://openapi.programming-hero.com/api/news/category/08')
         .then(res => res.json())
         .then(data => displayLoadData(data.data))
+        .catch(error=>console.log(error))
 }
 const displayLoadData = (allData) => {
+    console.log('all data',allData.length);
     const cardContainer = document.getElementById('card-container');
     cardContainer.innerHTML = '';
     allData.forEach(data => {
@@ -113,39 +181,7 @@ const displayLoadData = (allData) => {
     })
     
 }
+
 loadData();
-
-const modalFunction = (id) => {
-    fetch(`https://openapi.programming-hero.com/api/news/${id}`)
-        .then(res => res.json())
-        .then(data => displayDetails(data.data))
-    
-}
-const displayDetails = (allData) => {   
-    const description = document.getElementById('description');
-    const modalTitle = document.getElementById('exampleModalLabel');
-    const imageContainer = document.getElementById('img-container');
-    const publishedDate = document.getElementById('publish-date');
-
-    allData.forEach(data => {
-        console.log(data.length);
-          
-    const { published_date, title, details, author, total_view, _id,image_url } = data;
- 
-        modalTitle.innerText = `${title}
-    `;
-        description.innerText = `${details}`;
-        imageContainer.innerHTML = `
-        <img src="${image_url}" alt="">
-        `;
-        publishedDate.innerText = ` 
-        Publish Time: ${data.author.published_date}`
-        
-
-})
-}
-
-
-modalFunction();
 
 
